@@ -3,6 +3,7 @@ import express from 'express';
 import connectDB from './config/dbConnect.js';
 import cookieParser from 'cookie-parser';
 import userRouter from './routes/userRoute.js';
+import cors from 'cors';
 
 const port = process.env.PORT || 5000;
 
@@ -13,6 +14,13 @@ const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use(
+  cors({
+    origin: 'http://localhost:5173',
+    credentials: true,
+  })
+);
 
 app.use(cookieParser());
 
