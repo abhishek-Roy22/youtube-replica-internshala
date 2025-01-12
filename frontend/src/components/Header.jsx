@@ -1,11 +1,31 @@
 import { BadgePlus, CircleUserRound, LogOut, Menu, Search } from 'lucide-react';
 import Logo from '../assets/youtube.png';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { logoutUser, logout } from '../features/user/authSlice';
+import { toast } from 'react-toastify';
 
 const Header = ({ onClick }) => {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const { userInfo } = useSelector((state) => state.auth);
+
+  const handleLogout = async () => {
+    try {
+      const res = await dispatch(logoutUser());
+
+      // Check if logoutUser was successful
+      if (res.meta.requestStatus === 'fulfilled') {
+        dispatch(logout()); // Clear local state
+        toast.success('Logout successful');
+      } else {
+        // Handle specific error from logoutUser
+        throw res.payload || { error: 'Failed to log out' };
+      }
+    } catch (err) {
+      // Display error message to the user
+      toast.error(err?.message || err?.error || 'Something went wrong');
+    }
+  };
 
   return (
     <>
@@ -39,7 +59,7 @@ const Header = ({ onClick }) => {
                   {userInfo?.userName.charAt(0).toUpperCase()}
                 </div>
                 <button
-                  // onClick={() => dispatch(logoutUser())}
+                  onClick={() => handleLogout()}
                   className="flex items-center border border-indigo-500 py-1 px-2 bg-transparent gap-1 rounded-2xl cursor-pointer hover:bg-indigo-300 text-slate-100 hover:text-slate-800"
                 >
                   <LogOut size={16} />

@@ -1,7 +1,7 @@
 import { ArrowLeft } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { useDispatch, useSelector } from 'react-redux';
 import { loginUser, setCredentials } from '../features/user/authSlice';
 
@@ -153,7 +153,6 @@ const Login = () => {
             </div>
           </form>
         </div>
-        <ToastContainer theme="dark" />
       </div>
     </>
   );
