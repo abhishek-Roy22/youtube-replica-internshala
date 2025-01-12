@@ -1,6 +1,6 @@
 import Header from './components/Header';
+import Sidebar from './components/Sidebar';
 import { Outlet } from 'react-router-dom';
-// import Sidebar from './components/Sidebar';
 import { useState, useEffect, useCallback } from 'react';
 import { ToastContainer } from 'react-toastify';
 
@@ -29,7 +29,7 @@ const App = () => {
       <Header onClick={handleToggle} />
       <ToastContainer theme="dark" />
       <div className="flex gap-2">
-        {/* <Sidebar isOpen={isOpen} /> */}
+        <Sidebar isOpen={isOpen} />
         <Outlet />
       </div>
     </div>

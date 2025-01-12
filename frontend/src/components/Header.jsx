@@ -1,30 +1,16 @@
 import { BadgePlus, CircleUserRound, LogOut, Menu, Search } from 'lucide-react';
 import Logo from '../assets/youtube.png';
 import { Link } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import { logoutUser, logout } from '../features/user/authSlice';
-import { toast } from 'react-toastify';
+import { useSelector } from 'react-redux';
+import { useState } from 'react';
+import Dropdown from './Dropdown';
 
 const Header = ({ onClick }) => {
-  const dispatch = useDispatch();
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const { userInfo } = useSelector((state) => state.auth);
 
-  const handleLogout = async () => {
-    try {
-      const res = await dispatch(logoutUser());
-
-      // Check if logoutUser was successful
-      if (res.meta.requestStatus === 'fulfilled') {
-        dispatch(logout()); // Clear local state
-        toast.success('Logout successful');
-      } else {
-        // Handle specific error from logoutUser
-        throw res.payload || { error: 'Failed to log out' };
-      }
-    } catch (err) {
-      // Display error message to the user
-      toast.error(err?.message || err?.error || 'Something went wrong');
-    }
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
   };
 
   return (
@@ -55,19 +41,6 @@ const Header = ({ onClick }) => {
           <div className="hidden md:flex space-x-4">
             {userInfo ? (
               <>
-                <div className="w-10 h-10 rounded-full border-2 border-indigo-500 flex items-center justify-center text-slate-100 text-2xl font-bold p-2 bg-slate-400 cursor-pointer hover:ring-1 hover:ring-indigo-800">
-                  {userInfo?.userName.charAt(0).toUpperCase()}
-                </div>
-                <button
-                  onClick={() => handleLogout()}
-                  className="flex items-center border border-indigo-500 py-1 px-2 bg-transparent gap-1 rounded-2xl cursor-pointer hover:bg-indigo-300 text-slate-100 hover:text-slate-800"
-                >
-                  <LogOut size={16} />
-                  <span>Logout</span>
-                </button>
-              </>
-            ) : (
-              <>
                 <button
                   onClick={() => setIsModalOpen(true)}
                   className="flex items-center border border-indigo-500 py-2 px-3 bg-transparent gap-1 rounded-2xl cursor-pointer hover:bg-indigo-300 text-slate-100 hover:text-slate-800"
@@ -75,6 +48,18 @@ const Header = ({ onClick }) => {
                   <BadgePlus />
                   <span>Create Channel</span>
                 </button>
+                <div className="relative">
+                  <div
+                    onClick={toggleDropdown}
+                    className="w-10 h-10 rounded-full flex items-center justify-center text-slate-100 text-2xl font-bold p-3 ring-2 ring-indigo-800 cursor-pointer hover:ring-4 hover:ring-indigo-800"
+                  >
+                    {userInfo?.userName.charAt(0).toUpperCase()}
+                  </div>
+                  {isDropdownOpen && <Dropdown />}
+                </div>
+              </>
+            ) : (
+              <>
                 <Link
                   to="/login"
                   className="flex items-center border border-indigo-500 py-2 px-3 bg-transparent gap-1 rounded-2xl cursor-pointer hover:bg-indigo-300 text-slate-100 hover:text-slate-800"
