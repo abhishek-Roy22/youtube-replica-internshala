@@ -75,13 +75,6 @@ const Login = () => {
   return (
     <>
       <div className="max-w-7xl mx-auto flex flex-col items-center justify-center min-h-[88vh] bg-gray-100 dark:bg-gray-900">
-        <button
-          onClick={() => navigate('/')}
-          className="border-none outline-none text-indigo-500 flex items-center fixed top-10 left-5"
-        >
-          <ArrowLeft />
-          <span>Back to home</span>
-        </button>
         <div className="w-full max-w-md p-8 space-y-6 bg-white dark:bg-gray-800 rounded shadow-md">
           <h2 className="text-2xl font-bold text-center text-gray-900 dark:text-gray-100">
             Login

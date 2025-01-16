@@ -1,12 +1,14 @@
-import { BadgePlus, CircleUserRound, LogOut, Menu, Search } from 'lucide-react';
+import { BadgePlus, CircleUserRound, Menu, Search } from 'lucide-react';
 import Logo from '../assets/youtube.png';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useState } from 'react';
 import Dropdown from './Dropdown';
+import ChannelModal from './ChannelModal';
 
 const Header = ({ onClick }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const { userInfo } = useSelector((state) => state.auth);
 
   const toggleDropdown = () => {
@@ -48,6 +50,9 @@ const Header = ({ onClick }) => {
                   <BadgePlus />
                   <span>Create Channel</span>
                 </button>
+                {isModalOpen && (
+                  <ChannelModal onClose={() => setIsModalOpen(false)} />
+                )}
                 <div className="relative">
                   <div
                     onClick={toggleDropdown}

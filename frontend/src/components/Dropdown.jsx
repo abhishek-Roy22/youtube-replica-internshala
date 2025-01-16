@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { logoutUser, logout } from '../features/user/authSlice';
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
+import { LogOut } from 'lucide-react';
 
 const Dropdown = () => {
   const dispatch = useDispatch();
@@ -34,9 +35,9 @@ const Dropdown = () => {
       </Link>
       <button
         onClick={() => handleLogout()}
-        className="block w-full text-left px-4 py-2 text-sm text-slate-200 hover:bg-slate-400 rounded-md"
+        className="flex items-center gap-2 w-full text-left px-4 py-2 text-sm text-slate-200 hover:bg-slate-400 rounded-md "
       >
-        Logout
+        <LogOut size={20} /> Logout
       </button>
     </div>
   );
