@@ -1,18 +1,32 @@
+import axios from 'axios';
 import React, { useState } from 'react';
+import { toast } from 'react-toastify';
+import { Navigate, useNavigate } from 'react-router-dom';
 
 const ChannelModal = ({ isOpen, onClose }) => {
   const [url, setUrl] = useState('');
   const [channelName, setChannelName] = useState('');
   const [description, setDescription] = useState('');
 
-  const handleSubmit = (e) => {
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!url || !channelName || !description) {
-      alert('Please fill in all fields.');
+      toast.error('Please fill in all fields.');
       return;
     }
     const formData = { url, channelName, description };
     console.log('Submitted Data:', formData);
+
+    try {
+      await axios.post('/api/channel/', { ...formData });
+      toast.success('Channel Created Successful');
+      navigate('/');
+    } catch (error) {
+      console.log(error.message);
+      toast.error(error.message);
+    }
 
     // Reset form and close modal
     setUrl('');
