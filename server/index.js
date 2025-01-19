@@ -5,6 +5,8 @@ import cookieParser from 'cookie-parser';
 import userRouter from './routes/userRoute.js';
 import cors from 'cors';
 import channleRouter from './routes/channelRoute.js';
+import commentRouter from './routes/commentRoute.js';
+import videoRouter from './routes/videoRoute.js';
 
 const port = process.env.PORT || 5000;
 
@@ -27,6 +29,8 @@ app.use(cookieParser());
 
 app.use('/api/users', userRouter);
 app.use('/api/channel', channleRouter);
+app.use('/api/comments', commentRouter);
+app.use('/api/videos', videoRouter);
 
 // Define routes
 app.get('/', (req, res) => {
