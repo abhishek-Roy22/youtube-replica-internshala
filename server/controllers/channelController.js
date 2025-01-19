@@ -6,8 +6,8 @@ export const createChannel = async (req, res) => {
   const { channelName, description, channelBanner } = req.body;
 
   try {
-    const existingChannel = await Channel.findOne({ createdBy: userId });
-    if (existingChannel) {
+    const existingChannel = await Channel.findById(userId).populate('channel');
+    if (existingChannel.channel) {
       return res
         .status(400)
         .json({ message: 'You have already created a channel.' });
@@ -20,12 +20,9 @@ export const createChannel = async (req, res) => {
       createdBy: userId,
     });
 
-    // Update the user's channels array
-    await User.findByIdAndUpdate(
-      userId,
-      { $push: { channels: newChannel._id } },
-      { new: true }
-    );
+    // Update the user's channel reference
+    existingUser.channel = newChannel._id;
+    await existingUser.save();
 
     return res
       .status(201)

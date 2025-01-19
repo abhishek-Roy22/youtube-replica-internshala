@@ -1,4 +1,20 @@
+import useFetchProfile from '../Hooks/usefetchProfile';
+
 const AboutChannel = () => {
+  const { data, error, loading } = useFetchProfile();
+
+  if (loading) {
+    return (
+      <div className="w-full h-full flex items-center justify-center">
+        <h1 className="text-4xl text-green-600 font-bold text-center">
+          Loading...
+        </h1>
+      </div>
+    );
+  }
+
+  console.log(data);
+
   return (
     <div className="w-full flex flex-col items-center md:flex-row p-4 space-y-2 space-x-5">
       <div className="w-32 h-32 rounded-full bg-slate-400 overflow-hidden">

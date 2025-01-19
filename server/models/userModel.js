@@ -24,12 +24,10 @@ const userSchema = new Schema(
       default:
         'https://cdn4.vectorstock.com/i/1000x1000/46/73/person-gray-photo-placeholder-man-material-design-vector-23804673.jpg',
     },
-    channels: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: 'Channel',
-      },
-    ],
+    channel: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Channel', // Reference to the Channel model
+    },
   },
   { timestamps: true }
 );

@@ -1,4 +1,3 @@
-import React from 'react';
 import ChannelBanner from '../components/ChannelBanner';
 import AboutChannel from '../components/AboutChannel';
 import { ChannelMenus } from '../utils/staticData';
