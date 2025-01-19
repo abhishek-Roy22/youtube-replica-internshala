@@ -87,6 +87,7 @@ export const getUserProfile = async (req, res) => {
       _id: user._id,
       userName: user.userName,
       email: user.email,
+      avatar: user.avatar,
       channel: user.channel, // Single channel reference
     });
   } catch (error) {

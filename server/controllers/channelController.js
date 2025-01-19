@@ -6,8 +6,8 @@ export const createChannel = async (req, res) => {
   const { channelName, description, channelBanner } = req.body;
 
   try {
-    const existingChannel = await Channel.findById(userId).populate('channel');
-    if (existingChannel.channel) {
+    const existingUser = await User.findById(userId).populate('channel');
+    if (existingUser.channel) {
       return res
         .status(400)
         .json({ message: 'You have already created a channel.' });
