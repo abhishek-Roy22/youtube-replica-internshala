@@ -19,7 +19,6 @@ export const createChannel = async (req, res) => {
       channelBanner,
       createdBy: userId,
     });
-
     // Update the user's channel reference
     existingUser.channel = newChannel._id;
     await existingUser.save();
