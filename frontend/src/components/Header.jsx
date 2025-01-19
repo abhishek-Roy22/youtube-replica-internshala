@@ -60,7 +60,9 @@ const Header = ({ onClick }) => {
                   >
                     {userInfo?.userName.charAt(0).toUpperCase()}
                   </div>
-                  {isDropdownOpen && <Dropdown />}
+                  {isDropdownOpen && (
+                    <Dropdown setIsDropdownOpen={setIsDropdownOpen} />
+                  )}
                 </div>
               </>
             ) : (

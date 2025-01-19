@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
 import { LogOut } from 'lucide-react';
 
-const Dropdown = () => {
+const Dropdown = ({ setIsDropdownOpen }) => {
   const dispatch = useDispatch();
 
   const handleLogout = async () => {
@@ -28,10 +28,18 @@ const Dropdown = () => {
   return (
     <div className="absolute right-0 mt-2 w-48 bg-slate-700 rounded-md shadow-lg py-1 z-20 overflow-hidden px-2">
       <Link
+        onClick={() => setIsDropdownOpen(false)}
         to="/profile"
         className="block px-4 py-2 text-sm text-slate-200 hover:bg-slate-400 rounded-md"
       >
         Profile
+      </Link>
+      <Link
+        onClick={() => setIsDropdownOpen(false)}
+        to="/channel"
+        className="block px-4 py-2 text-sm text-slate-200 hover:bg-slate-400 rounded-md"
+      >
+        View Channel
       </Link>
       <button
         onClick={() => handleLogout()}

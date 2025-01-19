@@ -1,14 +1,11 @@
 import axios from 'axios';
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
-import { Navigate, useNavigate } from 'react-router-dom';
 
 const ChannelModal = ({ isOpen, onClose }) => {
   const [url, setUrl] = useState('');
   const [channelName, setChannelName] = useState('');
   const [description, setDescription] = useState('');
-
-  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -17,12 +14,11 @@ const ChannelModal = ({ isOpen, onClose }) => {
       return;
     }
     const formData = { url, channelName, description };
-    console.log('Submitted Data:', formData);
 
     try {
       await axios.post('/api/channel/', { ...formData });
       toast.success('Channel Created Successful');
-      navigate('/');
+      onClose();
     } catch (error) {
       console.log(error.message);
       toast.error(error.message);
@@ -32,7 +28,7 @@ const ChannelModal = ({ isOpen, onClose }) => {
     setUrl('');
     setChannelName('');
     setDescription('');
-    onRequestClose();
+    onClose();
   };
 
   const handleCancel = () => {
@@ -65,6 +61,7 @@ const ChannelModal = ({ isOpen, onClose }) => {
               id="url"
               value={url}
               onChange={(e) => setUrl(e.target.value)}
+              placeholder="Banner url"
               className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-300 leading-tight focus:outline-none focus:shadow-outline bg-transparent"
               required
             />
@@ -79,6 +76,7 @@ const ChannelModal = ({ isOpen, onClose }) => {
             <input
               type="text"
               id="channelName"
+              placeholder="Channel Name"
               value={channelName}
               onChange={(e) => setChannelName(e.target.value)}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-300 leading-tight focus:outline-none focus:shadow-outline bg-transparent"
@@ -94,6 +92,7 @@ const ChannelModal = ({ isOpen, onClose }) => {
             </label>
             <textarea
               id="description"
+              placeholder="About your channel"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-300 leading-tight focus:outline-none focus:shadow-outline bg-transparent"

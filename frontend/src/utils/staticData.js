@@ -101,3 +101,13 @@ export const filterCategories = [
   'Cooking',
   'Recently uploaded',
 ];
+
+export const ChannelMenus = [
+  'Home',
+  'Videos',
+  'Shorts',
+  'Live',
+  'Podcasts',
+  'Playlists',
+  'Community',
+];
