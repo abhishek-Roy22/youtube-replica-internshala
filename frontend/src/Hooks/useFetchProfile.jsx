@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
-const useFetchProfile = () => {
+const useFetchProfile = (url) => {
   const [data, setData] = useState(null); // Stores user and channel data
   const [loading, setLoading] = useState(true); // Loading state
   const [error, setError] = useState(null); // Error state
@@ -10,7 +10,7 @@ const useFetchProfile = () => {
     const fetchProfile = async () => {
       try {
         setLoading(true); // Start loading
-        const response = await axios.get('/api/users/profile'); // Fetch data from the API
+        const response = await axios.get(url); // Fetch data from the API
         setData(response.data); // Set the data
         setError(null); // Clear errors
       } catch (err) {

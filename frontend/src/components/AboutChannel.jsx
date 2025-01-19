@@ -1,11 +1,7 @@
-import useFetchProfile from '../Hooks/usefetchProfile';
-
-const AboutChannel = () => {
-  const { data, error, loading } = useFetchProfile();
-
+const AboutChannel = ({ data, error, loading }) => {
   if (loading) {
     return (
-      <div className="w-full h-full flex items-center justify-center">
+      <div className="w-full flex items-center justify-center">
         <h1 className="text-4xl text-green-600 font-bold text-center">
           Loading...
         </h1>
@@ -19,9 +15,7 @@ const AboutChannel = () => {
         <img src={data?.avatar} alt="" className="w-full object-cover" />
       </div>
       <div className="flex flex-col gap-3 justify-start">
-        <h1 className="text-5xl font-bold text-slate-300">
-          {data?.channel?.channelName}
-        </h1>
+        <h1 className="text-5xl font-bold text-slate-300">{data?.userName}</h1>
         <div>
           <span className="font-semibold text-slate-300 text-2xl">
             {`@${data?.channel?.channelName.toLowerCase()}`}{' '}

@@ -10,7 +10,7 @@ import { store } from './store/store.js';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import axios from 'axios';
 import Profile from './pages/profile.jsx';
-import Channle from './pages/Channel.jsx';
+import Channel from './pages/Channel.jsx';
 
 axios.defaults.baseURL = 'http://localhost:8000';
 axios.defaults.withCredentials = true;
@@ -38,7 +38,7 @@ const appRouter = createBrowserRouter([
       },
       {
         path: '/channel',
-        element: <Channle />,
+        element: <Channel />,
       },
     ],
   },
