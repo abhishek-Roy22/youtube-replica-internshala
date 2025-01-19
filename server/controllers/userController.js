@@ -76,16 +76,14 @@ export const logoutUser = async (req, res) => {
 // get user profile
 export const getUserProfile = async (req, res) => {
   try {
-    const user = await User.findById(req.user._id);
+    const user = await User.findById(req.user._id)
+      .select('-password')
+      .populate('channels');
     if (!user) {
       return res.status(404).json({ message: 'User not found!' });
     }
 
-    res.status(200).json({
-      _id: user._id,
-      userName: user.userName,
-      email: user.email,
-    });
+    res.status(200).json(user);
   } catch (error) {
     return res.status(500).json({ error: error.message });
   }

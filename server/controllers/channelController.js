@@ -1,11 +1,12 @@
 import Channel from '../models/channelModel.js';
+import User from '../models/userModel.js';
 
 export const createChannel = async (req, res) => {
   const userId = req.user._id;
   const { channelName, description, channelBanner } = req.body;
 
   try {
-    const existingChannel = await Channel.findById(userId);
+    const existingChannel = await Channel.findOne({ createdBy: userId });
     if (existingChannel) {
       return res
         .status(400)
@@ -18,6 +19,13 @@ export const createChannel = async (req, res) => {
       channelBanner,
       createdBy: userId,
     });
+
+    // Update the user's channels array
+    await User.findByIdAndUpdate(
+      userId,
+      { $push: { channels: newChannel._id } },
+      { new: true }
+    );
 
     return res
       .status(201)
