@@ -11,6 +11,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import axios from 'axios';
 import Profile from './pages/profile.jsx';
 import Channel from './pages/Channel.jsx';
+import CreateVideo from './components/CreateVideo.jsx';
 
 axios.defaults.baseURL = 'http://localhost:8000';
 axios.defaults.withCredentials = true;
@@ -39,6 +40,10 @@ const appRouter = createBrowserRouter([
       {
         path: '/channel',
         element: <Channel />,
+      },
+      {
+        path: '/create-video',
+        element: <CreateVideo />,
       },
     ],
   },

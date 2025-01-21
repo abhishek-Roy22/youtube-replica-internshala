@@ -19,20 +19,21 @@ export const createChannel = async (req, res) => {
       channelBanner,
       createdBy: userId,
     });
-    // Update the user's channel reference
+
     existingUser.channel = newChannel._id;
     await existingUser.save();
 
     return res
       .status(201)
-      .json({ message: 'Channel Created Successful', channel: newChannel });
+      .json({ message: 'Channel Created Successfully', channel: newChannel });
   } catch (error) {
-    console.log(error);
+    console.error('Channel creation error:', error);
     return res
       .status(500)
-      .json({ error: 'Server error. Please try again later' });
+      .json({ message: 'Server error. Please try again later' });
   }
 };
+
 export const getChannel = async (req, res) => {
   const { channelId } = req.params;
 
@@ -55,12 +56,12 @@ export const getChannel = async (req, res) => {
 
 export const updateChannel = async (req, res) => {
   const { channelId } = req.params;
-  const fields = req.body;
+  const updates = req.body;
 
   try {
     const updatedChannel = await Channel.findByIdAndUpdate(
       channelId,
-      { $set: { ...fields } },
+      { $set: updates },
       { new: true }
     );
 
@@ -73,10 +74,10 @@ export const updateChannel = async (req, res) => {
       channel: updatedChannel,
     });
   } catch (error) {
-    console.log(error);
+    console.error('Channel update error:', error);
     return res
       .status(500)
-      .json({ error: 'Server error. Please try again later' });
+      .json({ message: 'Server error. Please try again later' });
   }
 };
 

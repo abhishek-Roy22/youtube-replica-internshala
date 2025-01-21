@@ -7,6 +7,7 @@ import cors from 'cors';
 import channleRouter from './routes/channelRoute.js';
 import commentRouter from './routes/commentRoute.js';
 import videoRouter from './routes/videoRoute.js';
+import mongoose from 'mongoose';
 
 const port = process.env.PORT || 5000;
 
@@ -35,6 +36,12 @@ app.use('/api/videos', videoRouter);
 // Define routes
 app.get('/', (req, res) => {
   res.send('<h1>Server is running!</h1>');
+});
+
+// Error handling middleware
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ message: 'Something went wrong!' });
 });
 
 app.listen(port, () => {

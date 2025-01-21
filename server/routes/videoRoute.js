@@ -5,6 +5,7 @@ import {
   getVideo,
   updateVideo,
   likeVideo,
+  getUserVideos,
 } from '../controllers/videoController.js';
 import { authMiddleware } from '../middleware/authMiddleware.js';
 
@@ -12,6 +13,9 @@ const videoRouter = express.Router();
 
 // Create and get video routes
 videoRouter.route('/').post(authMiddleware, createVideo).get(getVideo);
+
+// Get user videos route
+videoRouter.get('/user', authMiddleware, getUserVideos);
 
 // Update video route
 videoRouter.put('/:id', authMiddleware, updateVideo);

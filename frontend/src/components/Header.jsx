@@ -1,6 +1,6 @@
 import { BadgePlus, CircleUserRound, Menu, Search } from 'lucide-react';
 import Logo from '../assets/youtube.png';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useState } from 'react';
 import Dropdown from './Dropdown';
@@ -10,6 +10,8 @@ const Header = ({ onClick }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { userInfo } = useSelector((state) => state.auth);
+
+  const navigate = useNavigate();
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -43,6 +45,13 @@ const Header = ({ onClick }) => {
           <div className="hidden md:flex space-x-4">
             {userInfo ? (
               <>
+                <button
+                  onClick={() => navigate('/create-video')}
+                  className="flex items-center border border-indigo-500 py-2 px-3 bg-transparent gap-1 rounded-2xl cursor-pointer hover:bg-indigo-300 text-slate-100 hover:text-slate-800"
+                >
+                  <BadgePlus />
+                  <span>Create Video</span>
+                </button>
                 <button
                   onClick={() => setIsModalOpen(true)}
                   className="flex items-center border border-indigo-500 py-2 px-3 bg-transparent gap-1 rounded-2xl cursor-pointer hover:bg-indigo-300 text-slate-100 hover:text-slate-800 relative"

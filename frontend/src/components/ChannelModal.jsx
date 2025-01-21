@@ -3,45 +3,58 @@ import React, { useState } from 'react';
 import { toast } from 'react-toastify';
 
 const ChannelModal = ({ isOpen, onClose }) => {
-  const [url, setUrl] = useState('');
+  const [channelBanner, setChannelBanner] = useState('');
   const [channelName, setChannelName] = useState('');
   const [description, setDescription] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!url || !channelName || !description) {
+    if (!channelBanner || !channelName || !description) {
       toast.error('Please fill in all fields.');
       return;
     }
-    const formData = { url, channelName, description };
 
+    setLoading(true);
     try {
-      await axios.post('/api/channel/', { ...formData });
-      toast.success('Channel Created Successful');
+      const formData = {
+        channelBanner,
+        channelName,
+        description,
+      };
+
+      await axios.post('/api/channels', formData);
+      toast.success('Channel Created Successfully');
       onClose();
     } catch (error) {
-      console.log(error.message);
-      toast.error(error.message);
+      const errorMessage =
+        error.response?.data?.message || 'Error creating channel';
+      toast.error(errorMessage);
+    } finally {
+      setLoading(false);
     }
 
-    // Reset form and close modal
-    setUrl('');
+    setChannelBanner('');
     setChannelName('');
     setDescription('');
-    onClose();
   };
 
   const handleCancel = () => {
-    setUrl('');
+    setChannelBanner('');
     setChannelName('');
     setDescription('');
     onClose();
   };
 
+  // if (!isOpen) return null;
+
   return (
-    <div className="absolute top-2/4 left-1/3 right-0">
-      <div className="fixed -z-10 -inset-1 bg-black bg-opacity-50 flex items-center justify-center" />
-      <div className="bg-slate-700 rounded-lg p-6 w-full max-w-lg z-10">
+    <div className="fixed inset-0 flex items-center justify-center z-50">
+      <div
+        className="fixed inset-0 bg-black bg-opacity-50"
+        onClick={handleCancel}
+      />
+      <div className="bg-slate-700 rounded-lg p-6 w-full max-w-lg z-10 relative">
         <h2
           className="text-2xl text-slate-300 font-bold mb-4"
           id="add-channel-title"
@@ -52,15 +65,15 @@ const ChannelModal = ({ isOpen, onClose }) => {
           <div className="mb-4">
             <label
               className="block text-slate-300 text-sm font-bold mb-2"
-              htmlFor="url"
+              htmlFor="channelBanner"
             >
-              URL
+              Channel Banner URL
             </label>
             <input
               type="url"
-              id="url"
-              value={url}
-              onChange={(e) => setUrl(e.target.value)}
+              id="channelBanner"
+              value={channelBanner}
+              onChange={(e) => setChannelBanner(e.target.value)}
               placeholder="Banner url"
               className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-300 leading-tight focus:outline-none focus:shadow-outline bg-transparent"
               required
@@ -102,9 +115,12 @@ const ChannelModal = ({ isOpen, onClose }) => {
           <div className="flex items-center justify-between">
             <button
               type="submit"
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              disabled={loading}
+              className={`bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline ${
+                loading ? 'opacity-50 cursor-not-allowed' : ''
+              }`}
             >
-              Submit
+              {loading ? 'Creating...' : 'Submit'}
             </button>
             <button
               type="button"

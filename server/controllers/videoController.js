@@ -1,5 +1,6 @@
 import Video from '../models/videoModel.js';
 import Channel from '../models/channelModel.js';
+import User from '../models/userModel.js';
 
 // Create a new video
 export const createVideo = async (req, res) => {
@@ -122,5 +123,38 @@ export const likeVideo = async (req, res) => {
     res.status(200).json({ message: 'Video liked successfully' });
   } catch (error) {
     res.status(500).json({ message: error.message });
+  }
+};
+
+// Add this new controller method
+export const getUserVideos = async (req, res) => {
+  const userId = req.user._id;
+
+  try {
+    // First get the user's channel
+    const user = await User.findById(userId).populate('channel');
+    if (!user.channel) {
+      return res
+        .status(404)
+        .json({ message: 'Channel not found for this user' });
+    }
+
+    // Find all videos where channel matches the user's channel ID
+    // Changed channelId to channel to match the Video model field
+    const videos = await Video.find({ channel: user.channel._id })
+      .populate('channel')
+      .sort({ createdAt: -1 }); // Sort by newest first
+
+    return res.status(200).json({
+      success: true,
+      videos,
+      message: 'Videos fetched successfully',
+    });
+  } catch (error) {
+    console.error('Error fetching user videos:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Error fetching videos. Please try again later.',
+    });
   }
 };

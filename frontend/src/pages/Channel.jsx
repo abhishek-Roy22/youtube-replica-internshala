@@ -4,6 +4,8 @@ import { ChannelMenus } from '../utils/staticData';
 import useFetchProfile from '../Hooks/usefetchProfile';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const Channel = () => {
   const {
@@ -13,29 +15,31 @@ const Channel = () => {
   } = useFetchProfile('/api/users/profile');
   const channelId = data?.channel?._id;
 
+  const [channel, setChannel] = useState(null);
   const [videos, setVideos] = useState([]);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchChannelVideos = async () => {
-      if (!channelId) return; // Exit early if channelId is undefined
-
-      setLoading(true);
-      setError(null);
-
+    const fetchChannelData = async () => {
       try {
-        const response = await axios.get(`/api/videos/channel/${channelId}`);
-        console.log(response.data);
-        setVideos(response.data.videos); // Assuming API response contains a `videos` array
-      } catch (err) {
-        setError(err.response?.data?.message || 'Failed to fetch videos');
+        // Fetch channel details
+        const channelResponse = await axios.get(`/api/channels/${channelId}`);
+        setChannel(channelResponse.data);
+
+        // Fetch channel videos
+        const videosResponse = await axios.get(`/api/videos/user`);
+        setVideos(videosResponse.data.videos);
+      } catch (error) {
+        const errorMessage =
+          error.response?.data?.message || 'Error fetching channel data';
+        toast.error(errorMessage);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchChannelVideos();
+    fetchChannelData();
   }, [channelId]);
 
   return (
