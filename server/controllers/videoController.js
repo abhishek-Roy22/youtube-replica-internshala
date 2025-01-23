@@ -5,12 +5,15 @@ import User from '../models/userModel.js';
 // Create a new video
 export const createVideo = async (req, res) => {
   try {
-    const { title, description, videoUrl, thumbnail, channelId } = req.body;
+    const { title, description, videoUrl, thumbnail } = req.body;
+    const userId = req.user._id; // Get user ID from auth middleware
 
-    // Check if channel exists
-    const channel = await Channel.findById(channelId);
-    if (!channel) {
-      return res.status(404).json({ message: 'Channel not found' });
+    // Find channel associated with user
+    const user = await User.findById(userId).populate('channel');
+    if (!user.channel) {
+      return res
+        .status(404)
+        .json({ message: 'Please create a channel before adding videos' });
     }
 
     // Create new video
@@ -19,12 +22,12 @@ export const createVideo = async (req, res) => {
       description,
       videoUrl,
       thumbnail,
-      channel: channelId,
+      channel: user.channel._id,
     });
 
     // Add video to channel's videos array
-    channel.videos.push(video._id);
-    await channel.save();
+    user.channel.videos.push(video._id);
+    await user.channel.save();
 
     res.status(201).json(video);
   } catch (error) {
@@ -126,35 +129,26 @@ export const likeVideo = async (req, res) => {
   }
 };
 
-// Add this new controller method
-export const getUserVideos = async (req, res) => {
-  const userId = req.user._id;
-
+// Search videos
+export const searchVideos = async (req, res) => {
   try {
-    // First get the user's channel
-    const user = await User.findById(userId).populate('channel');
-    if (!user.channel) {
-      return res
-        .status(404)
-        .json({ message: 'Channel not found for this user' });
+    const { q } = req.query; // q is the search query parameter
+
+    if (!q) {
+      return res.status(400).json({ message: 'Search query is required' });
     }
 
-    // Find all videos where channel matches the user's channel ID
-    // Changed channelId to channel to match the Video model field
-    const videos = await Video.find({ channel: user.channel._id })
-      .populate('channel')
-      .sort({ createdAt: -1 }); // Sort by newest first
+    // Search videos with basic text matching
+    const videos = await Video.find({
+      $or: [
+        { title: { $regex: q, $options: 'i' } },
+        { description: { $regex: q, $options: 'i' } },
+      ],
+    }).populate('channel');
 
-    return res.status(200).json({
-      success: true,
-      videos,
-      message: 'Videos fetched successfully',
-    });
+    res.status(200).json(videos);
   } catch (error) {
-    console.error('Error fetching user videos:', error);
-    return res.status(500).json({
-      success: false,
-      message: 'Error fetching videos. Please try again later.',
-    });
+    console.error('Search error:', error); // Add error logging
+    res.status(500).json({ message: 'Error searching videos' });
   }
 };

@@ -9,9 +9,14 @@ import ChannelModal from './ChannelModal';
 const Header = ({ onClick }) => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const { userInfo } = useSelector((state) => state.auth);
 
   const navigate = useNavigate();
+
+  const handleSearch = () => {
+    navigate(`/search?q=${searchQuery}`);
+  };
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -34,10 +39,15 @@ const Header = ({ onClick }) => {
             <div className="relative overflow-hidden">
               <input
                 type="search"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search"
                 className="w-full px-4 py-2 bg-slate-800 border-2 border-slate-400 rounded-full pr-12 focus:outline-none focus:border-blue-500 text-slate-100 font-bold"
               />
-              <button className="absolute right-0 top-0 h-full px-4 hover:bg-slate-400 rounded-r-full border-l">
+              <button
+                onClick={handleSearch}
+                className="absolute right-0 top-0 h-full px-4 hover:bg-slate-400 rounded-r-full border-l"
+              >
                 <Search className="w-5 h-5" color="grey" />
               </button>
             </div>

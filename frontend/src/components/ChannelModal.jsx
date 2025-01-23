@@ -23,7 +23,7 @@ const ChannelModal = ({ isOpen, onClose }) => {
         description,
       };
 
-      await axios.post('/api/channels', formData);
+      await axios.post('/api/channel', formData);
       toast.success('Channel Created Successfully');
       onClose();
     } catch (error) {
@@ -74,7 +74,7 @@ const ChannelModal = ({ isOpen, onClose }) => {
               id="channelBanner"
               value={channelBanner}
               onChange={(e) => setChannelBanner(e.target.value)}
-              placeholder="Banner url"
+              placeholder="https://example.com/thumbnail.jpg"
               className="shadow appearance-none border rounded w-full py-2 px-3 text-slate-300 leading-tight focus:outline-none focus:shadow-outline bg-transparent"
               required
             />

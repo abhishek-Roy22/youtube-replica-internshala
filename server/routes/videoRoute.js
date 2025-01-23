@@ -5,17 +5,21 @@ import {
   getVideo,
   updateVideo,
   likeVideo,
-  getUserVideos,
+  getAllVideos,
+  searchVideos,
 } from '../controllers/videoController.js';
 import { authMiddleware } from '../middleware/authMiddleware.js';
 
 const videoRouter = express.Router();
 
 // Create and get video routes
-videoRouter.route('/').post(authMiddleware, createVideo).get(getVideo);
+videoRouter.route('/').post(authMiddleware, createVideo);
 
-// Get user videos route
-videoRouter.get('/user', authMiddleware, getUserVideos);
+// get all videos route
+videoRouter.get('/all', getAllVideos);
+
+// get video by id route
+videoRouter.get('/:id', getVideo);
 
 // Update video route
 videoRouter.put('/:id', authMiddleware, updateVideo);
@@ -25,5 +29,8 @@ videoRouter.delete('/:id', authMiddleware, deleteVideo);
 
 // Like video route
 videoRouter.put('/like/:id', authMiddleware, likeVideo);
+
+// Search videos route
+videoRouter.get('/search', searchVideos);
 
 export default videoRouter;

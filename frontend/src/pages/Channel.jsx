@@ -4,8 +4,8 @@ import { ChannelMenus } from '../utils/staticData';
 import useFetchProfile from '../Hooks/usefetchProfile';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import VideoCard from '../components/VideoCard';
 
 const Channel = () => {
   const {
@@ -24,28 +24,44 @@ const Channel = () => {
     const fetchChannelData = async () => {
       try {
         // Fetch channel details
-        const channelResponse = await axios.get(`/api/channels/${channelId}`);
+        const channelResponse = await axios.get('/api/channel');
         setChannel(channelResponse.data);
-
-        // Fetch channel videos
-        const videosResponse = await axios.get(`/api/videos/user`);
-        setVideos(videosResponse.data.videos);
+        setVideos(channelResponse.data?.videos);
       } catch (error) {
         const errorMessage =
           error.response?.data?.message || 'Error fetching channel data';
         toast.error(errorMessage);
+        console.log(errorMessage);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchChannelData();
+    if (data) {
+      fetchChannelData();
+    }
   }, [channelId]);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center text-center text-slate-300 font-bold text-2xl">
+        Loading...
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex justify-center items-center text-center text-slate-300 font-bold text-2xl">
+        Error fetching channel data
+      </div>
+    );
+  }
 
   return (
     <div className="w-full min-h-screen px-2 py-4">
       {/* Banner */}
-      <ChannelBanner />
+      <ChannelBanner channel={channel} />
       {/* About Channel */}
       <AboutChannel data={data} error={profileError} loading={profileLoading} />
 
@@ -60,13 +76,21 @@ const Channel = () => {
           </li>
         ))}
       </ul>
-      <hr className="bg-slate-600" />
+      <hr className="bg-slate-600 mb-3" />
       {/* Videos card */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-        {/* {videos.map((video) => (
-          <VideoCard key={video.id} {...video} />
-        ))} */}
-      </div>
+      {videos.length > 0 ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {videos.map((video) => (
+            <VideoCard key={video._id} video={video} />
+          ))}
+        </div>
+      ) : (
+        <div className="flex justify-center items-center">
+          <p className="text-xl font-semibold text-slate-300">
+            This Channel has no videos yet
+          </p>
+        </div>
+      )}
     </div>
   );
 };

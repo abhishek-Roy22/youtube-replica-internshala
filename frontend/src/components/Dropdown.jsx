@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { logoutUser, logout } from '../features/user/authSlice';
 import { toast } from 'react-toastify';
 import { useDispatch } from 'react-redux';
@@ -6,6 +6,7 @@ import { LogOut } from 'lucide-react';
 
 const Dropdown = ({ setIsDropdownOpen }) => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleLogout = async () => {
     try {
@@ -15,6 +16,7 @@ const Dropdown = ({ setIsDropdownOpen }) => {
       if (res.meta.requestStatus === 'fulfilled') {
         dispatch(logout()); // Clear local state
         toast.success('Logout successful');
+        navigate('/');
       } else {
         // Handle specific error from logoutUser
         throw res.payload || { error: 'Failed to log out' };

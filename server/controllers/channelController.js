@@ -35,10 +35,10 @@ export const createChannel = async (req, res) => {
 };
 
 export const getChannel = async (req, res) => {
-  const { channelId } = req.params;
+  const userId = req.user._id;
 
   try {
-    const channel = await Channel.findById(channelId)
+    const channel = await Channel.findOne({ createdBy: userId })
       .populate('createdBy')
       .populate('videos');
     if (!channel) {

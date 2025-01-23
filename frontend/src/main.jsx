@@ -9,9 +9,11 @@ import { Provider } from 'react-redux';
 import { store } from './store/store.js';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import axios from 'axios';
-import Profile from './pages/profile.jsx';
+import Profile from './pages/Profile.jsx';
 import Channel from './pages/Channel.jsx';
 import CreateVideo from './components/CreateVideo.jsx';
+import VideoDetails from './pages/VideoDetails.jsx';
+import Search from './pages/Search.jsx';
 
 axios.defaults.baseURL = 'http://localhost:8000';
 axios.defaults.withCredentials = true;
@@ -44,6 +46,14 @@ const appRouter = createBrowserRouter([
       {
         path: '/create-video',
         element: <CreateVideo />,
+      },
+      {
+        path: '/watch/:id',
+        element: <VideoDetails />,
+      },
+      {
+        path: '/search',
+        element: <Search />,
       },
     ],
   },

@@ -34,7 +34,8 @@ export const getVideoComments = async (req, res) => {
     const { videoId } = req.params;
 
     const comments = await Comment.find({ video: videoId })
-      .populate('user', 'username')
+      .populate('user', 'userName')
+      .select('-password')
       .sort({ createdAt: -1 });
 
     res.status(200).json(comments);

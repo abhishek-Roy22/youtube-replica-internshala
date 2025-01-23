@@ -8,7 +8,6 @@ const CreateVideo = () => {
   const [description, setDescription] = useState('');
   const [videoUrl, setVideoUrl] = useState('');
   const [thumbnail, setThumbnail] = useState(''); // Added for thumbnail
-  const [channelId, setChannelId] = useState(''); // Added for channelId
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const navigate = useNavigate();
@@ -25,7 +24,6 @@ const CreateVideo = () => {
         description,
         videoUrl,
         thumbnail,
-        channelId,
       });
 
       if (response.data) {
@@ -131,20 +129,6 @@ const CreateVideo = () => {
                 required
                 placeholder="https://example.com/thumbnail.jpg"
                 className="appearance-none block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Channel ID
-              </label>
-              <input
-                type="text"
-                value={channelId}
-                onChange={(e) => setChannelId(e.target.value)}
-                required
-                className="appearance-none block w-full px-4 py-3 border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
-                placeholder="Enter channel ID"
               />
             </div>
           </div>
