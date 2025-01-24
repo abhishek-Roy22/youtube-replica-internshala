@@ -15,7 +15,7 @@ import CreateVideo from './components/CreateVideo.jsx';
 import VideoDetails from './pages/VideoDetails.jsx';
 import Search from './pages/Search.jsx';
 
-axios.defaults.baseURL = 'http://localhost:8000';
+axios.defaults.baseURL = 'https://youtube-replica-internshala.vercel.app';
 axios.defaults.withCredentials = true;
 
 const appRouter = createBrowserRouter([
