@@ -11,8 +11,6 @@ const Profile = () => {
     password: '',
   });
 
-  console.log(user);
-
   const handleChange = (e) => {
     setFormData({
       ...formData,
