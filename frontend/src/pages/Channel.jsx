@@ -1,7 +1,7 @@
 import ChannelBanner from '../components/ChannelBanner';
 import AboutChannel from '../components/AboutChannel';
 import { ChannelMenus } from '../utils/staticData';
-import useFetchProfile from '../Hooks/usefetchProfile';
+import useFetchProfile from '../Hooks/useFetchProfile';
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
