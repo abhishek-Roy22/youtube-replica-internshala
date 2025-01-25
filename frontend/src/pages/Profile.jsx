@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
-import useFetchProfile from '../Hooks/usefetchProfile';
+import useFetchProfile from '../Hooks/useFetchProfile';
 
 const Profile = () => {
   const { data: user, loading, error } = useFetchProfile('/api/users/profile');
