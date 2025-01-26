@@ -21,7 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(
   cors({
-    origin: 'https://youtube-replica-internshala-rgq1.vercel.app',
+    origin: '*',
     credentials: true,
   })
 );
