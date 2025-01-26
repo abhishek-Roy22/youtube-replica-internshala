@@ -10,7 +10,7 @@ const useFetchProfile = (url) => {
     const fetchProfile = async () => {
       try {
         setLoading(true); // Start loading
-        const response = await axios.get(url); // Fetch data from the API
+        const response = await axios.get(url, { withCredentials: true }); // Fetch data from the API
         setData(response.data); // Set the data
         setError(null); // Clear errors
       } catch (err) {

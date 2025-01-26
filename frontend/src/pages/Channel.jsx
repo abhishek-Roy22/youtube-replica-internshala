@@ -24,7 +24,9 @@ const Channel = () => {
     const fetchChannelData = async () => {
       try {
         // Fetch channel details
-        const channelResponse = await axios.get('/api/channel');
+        const channelResponse = await axios.get('/api/channel', {
+          withCredentials: true,
+        });
         setChannel(channelResponse.data);
         setVideos(channelResponse.data?.videos);
       } catch (error) {
