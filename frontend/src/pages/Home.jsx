@@ -6,14 +6,24 @@ import axios from 'axios';
 
 const Home = () => {
   const [videos, setVideos] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchVideos = async () => {
       const res = await axios.get('/api/videos/all');
       setVideos(res.data);
+      setLoading(false);
     };
     fetchVideos();
   }, []);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center text-slate-300">
+        Loading...
+      </div>
+    );
+  }
 
   return (
     <div className="flex-1 text-white px-2 py-4 overflow-hidden">
