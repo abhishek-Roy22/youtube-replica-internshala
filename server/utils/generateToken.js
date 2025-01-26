@@ -1,16 +1,12 @@
 import jwt from 'jsonwebtoken';
 
 const generateToken = (res, userId) => {
-  const token = jwt.sign({ userId }, process.env.JWT_SECRET, {
-    expiresIn: '2d',
-  });
+  const token = jwt.sign({ userId }, process.env.JWT_SECRET);
 
   res.cookie('jwt', token, {
     httpOnly: true,
     secure: true, // Only use secure in production
-    sameSite: 'None', // Try strict first,
-    path: '/',
-    maxAge: 2 * 24 * 60 * 60 * 1000, // 2 days
+    sameSite: 'None',
   });
 };
 
