@@ -7,7 +7,6 @@ import cors from 'cors';
 import channleRouter from './routes/channelRoute.js';
 import commentRouter from './routes/commentRoute.js';
 import videoRouter from './routes/videoRoute.js';
-import mongoose from 'mongoose';
 
 const port = process.env.PORT || 5000;
 
@@ -21,7 +20,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(
   cors({
-    origin: 'https://youtube-replica-client.netlify.app/',
+    origin: 'https://youtube-replica-internshala-client.vercel.app/',
     credentials: true,
   })
 );
