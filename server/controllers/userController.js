@@ -43,17 +43,20 @@ export const loginUser = async (req, res) => {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    if (user && (await user.matchPassword(password))) {
-      generateToken(res, user._id);
-
-      res.status(200).json({
-        _id: user._id,
-        userName: user.userName,
-        email: user.email,
-      });
-    } else {
-      res.status(401).json({ message: 'Invalid email or password' });
+    const isPasswordValid = await user.matchPassword(password);
+    if (!isPasswordValid) {
+      return res.status(401).json({ message: 'Invalid email or password' });
     }
+
+    // Generate JWT token and set cookie
+    generateToken(res, user._id);
+
+    // Send response after setting cookie
+    return res.status(200).json({
+      _id: user._id,
+      userName: user.userName,
+      email: user.email,
+    });
   } catch (error) {
     console.log(error.message);
     return res.status(500).json({ error: error.message });
@@ -65,6 +68,8 @@ export const logoutUser = async (req, res) => {
   try {
     res.clearCookie('jwt', {
       httpOnly: true,
+      secure: true, // Add secure flag for production
+      sameSite: 'none', // Required for cross-site cookie clearing
     });
     return res.status(200).json({ message: 'Logout successful' });
   } catch (error) {
@@ -88,9 +93,10 @@ export const getUserProfile = async (req, res) => {
       userName: user.userName,
       email: user.email,
       avatar: user.avatar,
-      channel: user.channel, // Single channel reference
+      channel: user.channel,
     });
   } catch (error) {
+    console.log(error.message); // Add logging
     return res.status(500).json({ error: error.message });
   }
 };
@@ -102,23 +108,22 @@ export const updateUserProfile = async (req, res) => {
       return res.status(404).json({ message: 'User not found!' });
     }
 
-    if (user) {
-      user.userName = req.body.userName || user.userName;
-      user.email = req.body.email || user.email;
+    user.userName = req.body.userName || user.userName;
+    user.email = req.body.email || user.email;
 
-      if (req.body.password) {
-        user.password = req.body.password;
-      }
-
-      const updatedUser = await user.save();
-
-      res.status(200).json({
-        _id: updatedUser._id,
-        userName: updatedUser.userName,
-        email: updatedUser.email,
-      });
+    if (req.body.password) {
+      user.password = req.body.password;
     }
+
+    const updatedUser = await user.save();
+
+    res.status(200).json({
+      _id: updatedUser._id,
+      userName: updatedUser.userName,
+      email: updatedUser.email,
+    });
   } catch (error) {
+    console.log(error.message); // Add logging
     return res.status(500).json({ error: error.message });
   }
 };
